@@ -62,7 +62,7 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_PHONE))
             {
-                m_strPhone = aryStrInfo[i].substring(6);
+                m_strPhone = aryStrInfo[i].substring(6).trim();
                 if (m_strPhone.matches("^[0-9 +-]+$") == false)
                 {
                     m_bIsValid = false;
@@ -71,11 +71,11 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_ADDRESS))
             {
-                m_strAddress = aryStrInfo[i].substring(8);
+                m_strAddress = aryStrInfo[i].substring(8).trim();
             }
             else if (strTag.equalsIgnoreCase(TAG_EMAIL))
             {
-                m_strEmail = aryStrInfo[i].substring(6);
+                m_strEmail = aryStrInfo[i].substring(6).trim();
                 if (m_strEmail.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$") == false)
                 {
                     m_bIsValid = false;
@@ -93,22 +93,22 @@ public class ECBEntry
     
     public String GetInfo()
     {
-        String strInfo = "name: " + m_strName + "\r\n" + 
-                         "birthday: " + m_cdBirthday.GetStrDate() + "\r\n";
+        String strInfo = TAG_NAME + ": " + m_strName + "\r\n" + 
+                         TAG_BRITHDAY + ": " + m_cdBirthday.GetStrDate() + "\r\n";
         
         if (m_strPhone != null)
         {
-            strInfo += "phone: " + m_strPhone + "\r\n"; 
+            strInfo += TAG_PHONE +": " + m_strPhone + "\r\n"; 
         }
         
         if (m_strAddress != null)
         {
-            strInfo += "address: " + m_strAddress + "\r\n"; 
+            strInfo += TAG_ADDRESS + ": " + m_strAddress + "\r\n"; 
         }
         
         if (m_strEmail != null)
         {
-            strInfo += "email: " + m_strEmail + "\r\n"; 
+            strInfo += TAG_EMAIL + ": " + m_strEmail + "\r\n"; 
         }
         
         strInfo += "\r\n";
@@ -118,22 +118,22 @@ public class ECBEntry
     
     public String GetInfoOneLine()
     {
-        String strInfo = "name " + m_strName + ";" + 
-                         "birthday " + m_cdBirthday.GetStrDate() + ";";
+        String strInfo = TAG_NAME + " " + m_strName + ";" + 
+                         TAG_BRITHDAY + " " + m_cdBirthday.GetStrDate() + ";";
         
         if (m_strPhone != null)
         {
-            strInfo += "phone " + m_strPhone + ";"; 
+            strInfo += TAG_PHONE + " " + m_strPhone + ";"; 
         }
         
         if (m_strAddress != null)
         {
-            strInfo += "address " + m_strAddress + ";"; 
+            strInfo += TAG_ADDRESS + " " + m_strAddress + ";"; 
         }
         
         if (m_strEmail != null)
         {
-            strInfo += "email " + m_strEmail + ";"; 
+            strInfo += TAG_EMAIL + " " + m_strEmail + ";"; 
         }
         
         strInfo += "\r\n";
