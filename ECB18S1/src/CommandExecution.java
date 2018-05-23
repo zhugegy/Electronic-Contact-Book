@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * be created.
  * 
  * @author Chen Zhuge
- * @version 0.02
- * @last updated on 20180521
+ * @version 0.03
+ * @last updated on 20180523
  */
 public class CommandExecution
 {
@@ -27,6 +27,7 @@ public class CommandExecution
      * @param strCommand Original line from the instruction file.
      * @param ecbTarget ECB class's instance.
      * @param strAttachInfo Providing additional information, such as output and report files path. 
+     *                      The format of strAttachInfo: "m_strOutputFileName + ";" + m_strReportFileName"
      */
     public CommandExecution(String strCommand, ECB ecbTarget, String strAttachInfo)
     {
@@ -61,7 +62,7 @@ public class CommandExecution
      */
     private void CommandExecutionAdd()
     {
-        String strCmdContent = m_strCommand.substring(4);
+        String strCmdContent = m_strCommand.substring(CMD_ADD.length() + 1);
         ECBEntry tmp = new ECBEntry(strCmdContent);
         
         if (tmp.GetValidation() == false)
@@ -88,14 +89,14 @@ public class CommandExecution
      */
     private void CommandExecutionDelete()
     {
-        String strCmdContent = m_strCommand.substring(7);
+        String strCmdContent = m_strCommand.substring(CMD_DELETE.length() + 1);
         String[] aryCmdContentLst = strCmdContent.split(";");
         
         // delete command with only name as the identification.
         if (aryCmdContentLst.length == 1)
         {
             int nTargetIndex = GetTargetIndex(aryCmdContentLst[0], m_ecbInstance);
-            while ( nTargetIndex != -1)
+            while (nTargetIndex != -1)
             {
                 m_ecbInstance.GetEntriesList().remove(nTargetIndex);
                 nTargetIndex = GetTargetIndex(aryCmdContentLst[0], m_ecbInstance);
@@ -129,14 +130,14 @@ public class CommandExecution
      */
     private void CommandExecutionQuery()
     {
-        String strCmdContent = m_strCommand.substring(6);
+        String strCmdContent = m_strCommand.substring(CMD_QUERY.length() + 1);
         ArrayList<ECBEntry> alStorage = new ArrayList<ECBEntry>();
         
         String[] aryStrInfo = strCmdContent.split(" ");
         
         if (aryStrInfo[0].equalsIgnoreCase(ECBEntry.TAG_NAME))
         {
-            String strTarget = strCmdContent.substring(5);
+            String strTarget = strCmdContent.substring(ECBEntry.TAG_NAME.length() + 1);
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
@@ -148,7 +149,7 @@ public class CommandExecution
         }
         else if (aryStrInfo[0].equalsIgnoreCase(ECBEntry.TAG_BRITHDAY))
         {
-            String strTarget = strCmdContent.substring(9);
+            String strTarget = strCmdContent.substring(ECBEntry.TAG_BRITHDAY.length() + 1);
             CustomDate tmp = new CustomDate(strTarget);
             
             if (tmp.GetDate() == null)
@@ -168,7 +169,7 @@ public class CommandExecution
         }
         else if (aryStrInfo[0].equalsIgnoreCase(ECBEntry.TAG_PHONE))
         {
-            String strTarget = strCmdContent.substring(6);
+            String strTarget = strCmdContent.substring(ECBEntry.TAG_PHONE.length() + 1);
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
@@ -180,7 +181,7 @@ public class CommandExecution
         }
         else if (aryStrInfo[0].equalsIgnoreCase(ECBEntry.TAG_ADDRESS))
         {
-            String strTarget = strCmdContent.substring(8);
+            String strTarget = strCmdContent.substring(ECBEntry.TAG_ADDRESS.length() + 1);
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
@@ -192,7 +193,7 @@ public class CommandExecution
         }
         else if (aryStrInfo[0].equalsIgnoreCase(ECBEntry.TAG_EMAIL))
         {
-            String strTarget = strCmdContent.substring(6);
+            String strTarget = strCmdContent.substring(ECBEntry.TAG_EMAIL.length() + 1);
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
@@ -261,7 +262,8 @@ public class CommandExecution
         
         
         //print out a reader-friendly file as well.
-        String strReprotFileFriendlyPath = strReportFilePath.substring(0, strReportFilePath.length() - 6);
+        String strReprotFileFriendlyPath = strReportFilePath.
+                substring(0, strReportFilePath.length() - 4);  // 4: length of ".txt"
         strReprotFileFriendlyPath += "Friendly.txt";
         
         try
@@ -284,7 +286,11 @@ public class CommandExecution
         
         return;
     }  
-        
+    
+    /**
+     * Sort by name. If names are identical, then sort by birthday. Ascending order.
+     * @param alToSort
+     */
     private void SortByNameThenBirthday(ArrayList<ECBEntry> alToSort)
     {
         for (int i = 0; i < alToSort.size(); i++)
@@ -304,6 +310,12 @@ public class CommandExecution
         return;
     }
     
+    /**
+     * Is ecbe1 bigger than ecbe2 in ascending order (first name then birthday).
+     * @param ecbe1
+     * @param ecbe2
+     * @return
+     */
     private boolean IsEntryBigger(ECBEntry ecbe1, ECBEntry ecbe2)
     {
         if (ecbe1.GetName().compareToIgnoreCase(ecbe2.GetName()) > 0)
@@ -386,17 +398,19 @@ public class CommandExecution
     private int IfAlreadyExist(ECBEntry ecbeInstance, ECB ecbInstance)
     {
         
-        for (int i = 0; i < ecbInstance.GetEntriesList().size(); i++)
-        {
-            if (ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(ecbeInstance.GetName()) &&
-                ecbInstance.GetEntriesList().get(i).GetBirthday().GetValue() == 
-                ecbeInstance.GetBirthday().GetValue())
-            {
-                return i;
-            }
-        }
+//        for (int i = 0; i < ecbInstance.GetEntriesList().size(); i++)
+//        {
+//            if (ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(ecbeInstance.GetName()) &&
+//                ecbInstance.GetEntriesList().get(i).GetBirthday().GetValue() == 
+//                ecbeInstance.GetBirthday().GetValue())
+//            {
+//                return i;
+//            }
+//        }
+//        
+//        return -1;
         
-        return -1;
+        return GetTargetIndex(ecbeInstance.GetName(), ecbeInstance.GetBirthday(), ecbInstance);
     }
 }
  

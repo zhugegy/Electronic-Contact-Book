@@ -4,8 +4,8 @@ import java.util.Scanner;
 /**
  * ECBProcessor: The processor of the ECB.
  * @author Chen Zhuge
- * @version 0.02
- * @last updated on 20180521
+ * @version 0.03
+ * @last updated on 20180523
  */
 
 public class ECBProcessor
@@ -47,6 +47,8 @@ public class ECBProcessor
          * add them into the ECB, who has an array list to store them.
         */
         ProcessPhoneBookFile();
+        
+        // Read the instruction file, and execute these instructions.
         ProcessInstructionFile();
         
         //debug
@@ -70,7 +72,7 @@ public class ECBProcessor
             while (sScanner.hasNextLine())
             {
                 String strTmpCmd = "add " + sScanner.nextLine();
-                CommandExecution tmp = new CommandExecution(strTmpCmd, m_ecbInstance, null);        
+                CommandExecution ceTmp = new CommandExecution(strTmpCmd, m_ecbInstance, null);        
             }
         }catch (Exception e)
         {

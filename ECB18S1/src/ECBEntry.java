@@ -4,8 +4,8 @@ import javax.swing.SpringLayout.Constraints;
  * ECBEntry: elements in the electronic contact book (ECB).
  * 
  * @author Chen Zhuge
- * @version 0.04
- * @last updated on 20180521
+ * @version 0.05
+ * @last updated on 20180523
  *
  */
 
@@ -44,7 +44,7 @@ public class ECBEntry
             String strTag = aryStrSubInfo[0];
             if (strTag.equalsIgnoreCase(TAG_NAME))
             {
-                m_strName = aryStrInfo[i].substring(5).trim();
+                m_strName = aryStrInfo[i].substring(TAG_NAME.length() + 1).trim();
                 if (m_strName.matches("^[a-zA-Z ,.'-]+$") == false)
                 {
                     m_bIsValid = false;
@@ -53,7 +53,7 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_BRITHDAY))
             {
-                m_cdBirthday = new CustomDate(aryStrInfo[i].substring(9));
+                m_cdBirthday = new CustomDate(aryStrInfo[i].substring(TAG_BRITHDAY.length() + 1));
                 if (m_cdBirthday == null)
                 {
                     m_bIsValid = false;
@@ -62,7 +62,7 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_PHONE))
             {
-                m_strPhone = aryStrInfo[i].substring(6).trim();
+                m_strPhone = aryStrInfo[i].substring(TAG_PHONE.length() + 1).trim();
                 if (m_strPhone.matches("^[0-9 +-]+$") == false)
                 {
                     m_bIsValid = false;
@@ -71,11 +71,11 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_ADDRESS))
             {
-                m_strAddress = aryStrInfo[i].substring(8).trim();
+                m_strAddress = aryStrInfo[i].substring(TAG_ADDRESS.length() + 1).trim();
             }
             else if (strTag.equalsIgnoreCase(TAG_EMAIL))
             {
-                m_strEmail = aryStrInfo[i].substring(6).trim();
+                m_strEmail = aryStrInfo[i].substring(TAG_EMAIL.length() + 1).trim();
                 if (m_strEmail.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$") == false)
                 {
                     m_bIsValid = false;
@@ -91,6 +91,10 @@ public class ECBEntry
         
     }
     
+    /**
+     * Summarize this entry's information (in a friendly format).
+     * @return
+     */
     public String GetInfo()
     {
         String strInfo = TAG_NAME + ": " + m_strName + "\r\n" + 
@@ -116,6 +120,10 @@ public class ECBEntry
         return strInfo;
     }
     
+    /**
+     * Summarize this entry's information (in a one-line format).
+     * @return
+     */
     public String GetInfoOneLine()
     {
         String strInfo = TAG_NAME + " " + m_strName + ";" + 
