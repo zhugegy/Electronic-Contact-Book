@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * be created.
  * 
  * @author Chen Zhuge
- * @version 0.03
- * @last updated on 20180523
+ * @version 0.04
+ * @last updated on 20180602
  */
 public class CommandExecution
 {
@@ -173,7 +173,7 @@ public class CommandExecution
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
-              if (e.GetPhone().equalsIgnoreCase(strTarget)) 
+              if (e.GetPhone() != null && e.GetPhone().equalsIgnoreCase(strTarget)) 
               {
                   alStorage.add(e);
               }
@@ -185,7 +185,7 @@ public class CommandExecution
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
-              if (e.GetAddress().equalsIgnoreCase(strTarget)) 
+              if (e.GetAddress() != null && e.GetAddress().equalsIgnoreCase(strTarget)) 
               {
                   alStorage.add(e);
               }
@@ -197,7 +197,7 @@ public class CommandExecution
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
-              if (e.GetEmail().equalsIgnoreCase(strTarget)) 
+              if (e.GetEmail() != null && e.GetEmail().equalsIgnoreCase(strTarget)) 
               {
                   alStorage.add(e);
               }
@@ -249,7 +249,7 @@ public class CommandExecution
             
             for (ECBEntry e : m_ecbInstance.GetEntriesList())
             {
-                pwWriter.printf("%s", e.GetInfoOneLine());
+                pwWriter.printf("%s", e.GetInfo());
                 pwWriter.printf("\r\n");    //blank line between entries.
             }
             
@@ -262,27 +262,27 @@ public class CommandExecution
         
         
         //print out a reader-friendly file as well.
-        String strReprotFileFriendlyPath = strReportFilePath.
-                substring(0, strReportFilePath.length() - 4);  // 4: length of ".txt"
-        strReprotFileFriendlyPath += "Friendly.txt";
+//        String strReprotFileFriendlyPath = strReportFilePath.
+//                substring(0, strReportFilePath.length() - 4);  // 4: length of ".txt"
+//        strReprotFileFriendlyPath += "Friendly.txt";
         
-        try
-        {
-            File fwWriter = new File(strReprotFileFriendlyPath);
-            PrintWriter pwWriter = new PrintWriter(fwWriter);
-            
-            for (ECBEntry e : m_ecbInstance.GetEntriesList())
-            {
-                pwWriter.printf("%s", e.GetInfo());
-                pwWriter.printf("\r\n");    //blank line between entries.
-            }
-            
-            pwWriter.close();
-  
-        } catch (Exception e)
-        {
-            // TODO: handle exception
-        }
+//        try
+//        {
+//            File fwWriter = new File(strReprotFileFriendlyPath);
+//            PrintWriter pwWriter = new PrintWriter(fwWriter);
+//            
+//            for (ECBEntry e : m_ecbInstance.GetEntriesList())
+//            {
+//                pwWriter.printf("%s", e.GetInfo());
+//                pwWriter.printf("\r\n");    //blank line between entries.
+//            }
+//            
+//            pwWriter.close();
+//  
+//        } catch (Exception e)
+//        {
+//            // TODO: handle exception
+//        }
         
         return;
     }  

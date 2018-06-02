@@ -1,50 +1,29 @@
-====== query email robert.taylor@gmail.com ======
-name: Aames Debran
-birthday: 23-03-1999
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: James Lebran
-birthday: 23-03-1989
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: James Smith
-birthday: 23-03-1919
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: James Smith
-birthday: 23-03-1929
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: James Smith
-birthday: 23-03-1989
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: James Smith
-birthday: 23-03-1999
-address: 60 Morris St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
-
-name: John Jones
-birthday: 18-09-1968
-phone: 13649852
-address: 2 Fairmount St, Dulwich Hill, NSW 2203
-email: robert.taylor@gmail.com
-
+====== query name Posephine Esmerelda Bloggs ======
 name: Posephine Esmerelda Bloggs
-birthday: 13-05-1980
-phone: 16549853
+birthday: 26-03-1965
 address: 102 Smith St, Summer hill, NSW 2130
-email: robert.taylor@gmail.com
+name: Posephine Esmerelda Bloggs
+birthday: 05-09-1980
+address: 102 Smith St, Summer hill, NSW 2130
+====== end of query name Posephine Esmerelda Bloggs ======
 
+====== query birthday 05-09-1980 ======
+name: James Smith
+birthday: 05-09-1980
+address: 60 Morris St, Summer Hill, NSW 2130
+name: Posephine Esmerelda Bloggs
+birthday: 05-09-1980
+address: 102 Smith St, Summer hill, NSW 2130
 name: Robert Taylor
-birthday: 03-06-2008
+birthday: 05-09-1980
 address: 36 Carrington St, Summer Hill, NSW 2130
-email: robert.taylor@gmail.com
+====== end of query birthday 05-09-1980 ======
 
-====== end of query email robert.taylor@gmail.com ======
+====== query phone 13589634 ======
+name: Patricia Davies
+birthday: 25-12-1975
+phone: 13589634
+address: 61 Gibbes St, Rockdale, NSW 2216
+email: p.davis@fanfare.com.au
+====== end of query phone 13589634 ======
 

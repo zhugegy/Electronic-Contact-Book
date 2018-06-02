@@ -1,1 +1,0 @@
-Ask if (for example) the email is not valid, but with valid name and birthday. whether adding this contact or not.

@@ -1,3 +1,0 @@
-query email robert.taylor@gmail.com
-delete James Smith
-save

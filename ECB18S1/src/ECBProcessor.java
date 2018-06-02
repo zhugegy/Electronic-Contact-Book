@@ -4,8 +4,8 @@ import java.util.Scanner;
 /**
  * ECBProcessor: The processor of the ECB.
  * @author Chen Zhuge
- * @version 0.03
- * @last updated on 20180523
+ * @version 0.04
+ * @last updated  on 20180602
  */
 
 public class ECBProcessor
@@ -69,11 +69,34 @@ public class ECBProcessor
         {
             File fRead = new File(m_strPhoneBookFileName);
             Scanner sScanner = new Scanner(fRead);
+            String strContactInfo = "";
             while (sScanner.hasNextLine())
             {
-                String strTmpCmd = "add " + sScanner.nextLine();
-                CommandExecution ceTmp = new CommandExecution(strTmpCmd, m_ecbInstance, null);        
+                String strTmp = sScanner.nextLine();
+                
+                //if this is the delimiter of a contact info
+                if (strTmp.length() == 0)
+                {
+                    strContactInfo = "add " + strContactInfo;
+                    CommandExecution ceTmp = new CommandExecution(strContactInfo, m_ecbInstance, null); 
+                    strContactInfo = "";
+                }
+                //if this is an informative string
+                else
+                {
+                    strContactInfo = strContactInfo + strTmp + ";";
+                }
             }
+            
+            
+            //If the file is not end with an empty line, we still need to deal with this (rare) case.
+            if (strContactInfo.length() != 0)
+            {
+                strContactInfo += "add ";
+                CommandExecution ceTmp = new CommandExecution(strContactInfo, m_ecbInstance, null); 
+                //->//strContactInfo = "";
+            }
+            
         }catch (Exception e)
         {
             // TODO: handle exception

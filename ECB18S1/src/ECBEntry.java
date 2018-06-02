@@ -115,7 +115,7 @@ public class ECBEntry
             strInfo += TAG_EMAIL + ": " + m_strEmail + "\r\n"; 
         }
         
-        strInfo += "\r\n";
+        //strInfo += "\r\n";    //no longer needed
         
         return strInfo;
     }
