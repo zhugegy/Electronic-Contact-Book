@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"<Unnamed>","l":"ECB"},{"p":"<Unnamed>","l":"ECBEntry"}]
+typeSearchIndex = [{"p":"<Unnamed>","l":"CommandExecution"},{"p":"<Unnamed>","l":"CustomDate"},{"p":"<Unnamed>","l":"ECB"},{"p":"<Unnamed>","l":"ECBEntry"},{"p":"<Unnamed>","l":"ECBProcessor"}]

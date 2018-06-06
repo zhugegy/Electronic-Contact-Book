@@ -6,6 +6,7 @@
  */
 
 import java.util.Date;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
 public class CustomDate 
@@ -54,6 +55,11 @@ public class CustomDate
      */
     public Date GetDate()
     {
+        if (isLegalDate(m_StrDate) == false)
+        {
+            return null;
+        }
+        
         return m_dDate;
     }
     
@@ -66,9 +72,24 @@ public class CustomDate
         return m_dDate.getTime();
     }
     
+    /**
+     * Get date in string format.
+     * @return
+     */
     public String GetStrDate()
     {
         return m_StrDate;
     }
     
+    /**
+     * Check if this date is legal, e.g. 30-02-2000.
+     * Reference: https://stackoverflow.com/questions/226910/how-to-sanity-check-a-date-in-java
+     * @param strSource
+     * @return
+     */
+    private boolean isLegalDate(String strSource)
+    {
+        dateFormat.setLenient(false);
+        return dateFormat.parse(strSource, new ParsePosition(0)) != null;
+    }
 }

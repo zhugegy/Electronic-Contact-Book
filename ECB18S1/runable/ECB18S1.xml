@@ -7,7 +7,7 @@
     <property name="dir.workspace" value="${dir.buildfile}/.."/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
     <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/Untitled.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${dir.jarfile}/ECB18S1.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="EntryPoint"/>
                 <attribute name="Class-Path" value="."/>

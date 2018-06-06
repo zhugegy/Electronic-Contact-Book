@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * be created.
  * 
  * @author Chen Zhuge
- * @version 0.04
- * @last updated on 20180602
+ * @version 0.05
+ * updated on 20180606
  */
 public class CommandExecution
 {
@@ -70,16 +70,32 @@ public class CommandExecution
             return;
         }
         
-        int nIndex = IfAlreadyExist(tmp, m_ecbInstance);
+        int nIndex = IfAlreadyExist(tmp);
         
         /* If the entry is already in the array list, first remove it, then add the new instance 
         into the array list.*/ 
         if (nIndex != -1)
         {
-            m_ecbInstance.GetEntriesList().remove(nIndex);
+            //update
+            if (tmp.GetPhone() != null)
+            {
+                m_ecbInstance.GetEntriesList().get(nIndex).SetPhone(tmp.GetPhone());
+            }
+            
+            if (tmp.GetAddress() != null)
+            {
+                m_ecbInstance.GetEntriesList().get(nIndex).SetAddress(tmp.GetAddress());
+            }
+            
+            if (tmp.GetEmail() != null)
+            {
+                m_ecbInstance.GetEntriesList().get(nIndex).SetEmail(tmp.GetEmail());
+            }     
         }
-        
-        m_ecbInstance.GetEntriesList().add(tmp);
+        else
+        {
+            m_ecbInstance.GetEntriesList().add(tmp);
+        }
         
         return;
     }
@@ -95,11 +111,11 @@ public class CommandExecution
         // delete command with only name as the identification.
         if (aryCmdContentLst.length == 1)
         {
-            int nTargetIndex = GetTargetIndex(aryCmdContentLst[0], m_ecbInstance);
+            int nTargetIndex = GetTargetIndex(aryCmdContentLst[0]);
             while (nTargetIndex != -1)
             {
                 m_ecbInstance.GetEntriesList().remove(nTargetIndex);
-                nTargetIndex = GetTargetIndex(aryCmdContentLst[0], m_ecbInstance);
+                nTargetIndex = GetTargetIndex(aryCmdContentLst[0]);
             }
         }
         // delete command with name and birthday as the identification.
@@ -113,12 +129,12 @@ public class CommandExecution
                 return;
             }
             
-            int nTargetIndex = GetTargetIndex(aryCmdContentLst[0], cdTmp, m_ecbInstance);
+            int nTargetIndex = GetTargetIndex(aryCmdContentLst[0], cdTmp);
             
             while ( nTargetIndex != -1)
             {
                 m_ecbInstance.GetEntriesList().remove(nTargetIndex);
-                nTargetIndex = GetTargetIndex(aryCmdContentLst[0], cdTmp, m_ecbInstance);
+                nTargetIndex = GetTargetIndex(aryCmdContentLst[0], cdTmp);
             }
         }
         
@@ -217,7 +233,7 @@ public class CommandExecution
             pwWriter.printf("====== %s ======\r\n", m_strCommand);
             for (ECBEntry e : alStorage)
             {
-                pwWriter.printf("%s", e.GetInfo());
+                pwWriter.printf("%s\r\n", e.GetInfo());
             }
             pwWriter.printf("====== %s%s ======\r\n\r\n", "end of ", m_strCommand);
             
@@ -237,6 +253,9 @@ public class CommandExecution
         return;
     }
     
+    /**
+     * Save command.
+     */
     public void CommandExecutionSave()
     {
         String[] aryStrFilePath = m_strAttachInfo.split(";");
@@ -259,30 +278,6 @@ public class CommandExecution
         {
             // TODO: handle exception
         }
-        
-        
-        //print out a reader-friendly file as well.
-//        String strReprotFileFriendlyPath = strReportFilePath.
-//                substring(0, strReportFilePath.length() - 4);  // 4: length of ".txt"
-//        strReprotFileFriendlyPath += "Friendly.txt";
-        
-//        try
-//        {
-//            File fwWriter = new File(strReprotFileFriendlyPath);
-//            PrintWriter pwWriter = new PrintWriter(fwWriter);
-//            
-//            for (ECBEntry e : m_ecbInstance.GetEntriesList())
-//            {
-//                pwWriter.printf("%s", e.GetInfo());
-//                pwWriter.printf("\r\n");    //blank line between entries.
-//            }
-//            
-//            pwWriter.close();
-//  
-//        } catch (Exception e)
-//        {
-//            // TODO: handle exception
-//        }
         
         return;
     }  
@@ -331,34 +326,19 @@ public class CommandExecution
             }
         }
         
-        
         return false;
     }
-    
-    /**
-     * Query. Parse the recording from file m_strInstructionFileName as the input.
-     * @param strCategory name, birthday, phone, address, email.
-     * @param strContent content to match.
-     * @return array list that contains all the matched contacts.
-     */
-//    private ArrayList<ECBEntry> QueryEntry(String strCategory, String strContent)
-//    {
-//        return null;
-//    }
-    
-    
-    
+     
     /**
      * Find the index of a target in the array list by matching its name.
      * @param strName
-     * @param ecbInstance
      * @return If found, return its index in array list. If not found, return -1.
      */
-    private int GetTargetIndex(String strName, ECB ecbInstance)
+    private int GetTargetIndex(String strName)
     {
-        for (int i = 0; i < ecbInstance.GetEntriesList().size(); i++)
+        for (int i = 0; i < m_ecbInstance.GetEntriesList().size(); i++)
         {
-            if (ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(strName))
+            if (m_ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(strName))
             {
                 return i;
             }
@@ -371,16 +351,14 @@ public class CommandExecution
      * Find the index of a target in the array list by matching both its name and birthday.
      * @param strName
      * @param cdDate
-     * @param ecbInstance
      * @return If found, return its index in array list. If not found, return -1.
      */
-    private int GetTargetIndex(String strName, CustomDate cdDate, ECB ecbInstance)
+    private int GetTargetIndex(String strName, CustomDate cdDate)
     {
-        for (int i = 0; i < ecbInstance.GetEntriesList().size(); i++)
+        for (int i = 0; i < m_ecbInstance.GetEntriesList().size(); i++)
         {
-            if (ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(strName) &&
-                ecbInstance.GetEntriesList().get(i).GetBirthday().GetValue() == 
-                cdDate.GetValue())
+            if (m_ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(strName) &&
+                m_ecbInstance.GetEntriesList().get(i).GetBirthday().GetValue() == cdDate.GetValue())
             {
                 return i;
             }
@@ -395,22 +373,9 @@ public class CommandExecution
      * @param ecbeInstance
      * @return If yes, return its index. If no, return -1.
      */
-    private int IfAlreadyExist(ECBEntry ecbeInstance, ECB ecbInstance)
+    private int IfAlreadyExist(ECBEntry ecbeInstance)
     {
-        
-//        for (int i = 0; i < ecbInstance.GetEntriesList().size(); i++)
-//        {
-//            if (ecbInstance.GetEntriesList().get(i).GetName().equalsIgnoreCase(ecbeInstance.GetName()) &&
-//                ecbInstance.GetEntriesList().get(i).GetBirthday().GetValue() == 
-//                ecbeInstance.GetBirthday().GetValue())
-//            {
-//                return i;
-//            }
-//        }
-//        
-//        return -1;
-        
-        return GetTargetIndex(ecbeInstance.GetName(), ecbeInstance.GetBirthday(), ecbInstance);
+        return GetTargetIndex(ecbeInstance.GetName(), ecbeInstance.GetBirthday());
     }
 }
  

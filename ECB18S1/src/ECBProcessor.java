@@ -8,6 +8,13 @@ import java.util.Scanner;
  * @last updated  on 20180602
  */
 
+/**
+ * The controller of this program. The program starts with the construction of this class.
+ * @author Chen Zhuge
+ * @version 0.02
+ * updated on 20180606
+ *
+ */
 public class ECBProcessor
 {
     private String m_strPhoneBookFileName;
@@ -20,9 +27,9 @@ public class ECBProcessor
     /**
      * Constructor of ECBProcessor
      * @param strPhoneBookFileName
-     * @param CommandsFIle
-     * @param OutputFileName
-     * @param ReportFileName
+     * @param strCommandsFIle
+     * @param strOutputFileName
+     * @param strReportFileName
      */
     public ECBProcessor(String strPhoneBookFileName, String strCommandsFIle, 
             String strOutputFileName, String strReportFileName)
@@ -33,29 +40,10 @@ public class ECBProcessor
         m_strReportFileName = strReportFileName;
                
         m_ecbInstance = new ECB();
-        
-        DoTheJob();     
-    }
-     
-    /**
-     * The whole job process: Read initial input -> Read and execute instructions from instruction file.
-     * @return return 0 if success.
-     */
-    private int DoTheJob()
-    {
-        /* Read the phone book file, and construct the ECBEntries. For valid ECBEntires,
-         * add them into the ECB, who has an array list to store them.
-        */
+    
         ProcessPhoneBookFile();
-        
-        // Read the instruction file, and execute these instructions.
         ProcessInstructionFile();
-        
-        //debug
-        //m_ecbInstance.__testPrintTheNames();
-        
-        return 0;
-    }
+    }     
     
     /**
      * Read the phone book file, and construct the ECBEntries. For valid ECBEntires,
@@ -87,12 +75,11 @@ public class ECBProcessor
                     strContactInfo = strContactInfo + strTmp + ";";
                 }
             }
-            
-            
+                  
             //If the file is not end with an empty line, we still need to deal with this (rare) case.
             if (strContactInfo.length() != 0)
             {
-                strContactInfo += "add ";
+                strContactInfo = "add " + strContactInfo;
                 CommandExecution ceTmp = new CommandExecution(strContactInfo, m_ecbInstance, null); 
                 //->//strContactInfo = "";
             }

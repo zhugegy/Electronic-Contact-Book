@@ -1,14 +1,21 @@
+import java.util.Date;
+
 import javax.swing.SpringLayout.Constraints;
 
 /**
  * ECBEntry: elements in the electronic contact book (ECB).
  * 
  * @author Chen Zhuge
- * @version 0.05
- * @last updated on 20180523
+ * @version 0.06
+ * updated on 20180606
  *
  */
 
+/**
+ * This class is the information of a contact.
+ * @author Chen Zhuge
+ *
+ */
 public class ECBEntry
 {
     final static String TAG_NAME = "name";
@@ -40,11 +47,11 @@ public class ECBEntry
         
         for (int i = 0; i < aryStrInfo.length; i++)
         {
-            String[] aryStrSubInfo = aryStrInfo[i].split(" ");
+            String[] aryStrSubInfo = aryStrInfo[i].trim().split(" ");
             String strTag = aryStrSubInfo[0];
             if (strTag.equalsIgnoreCase(TAG_NAME))
             {
-                m_strName = aryStrInfo[i].substring(TAG_NAME.length() + 1).trim();
+                m_strName = aryStrInfo[i].trim().substring(TAG_NAME.length() + 1).trim();
                 if (m_strName.matches("^[a-zA-Z ,.'-]+$") == false)
                 {
                     m_bIsValid = false;
@@ -53,8 +60,8 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_BRITHDAY))
             {
-                m_cdBirthday = new CustomDate(aryStrInfo[i].substring(TAG_BRITHDAY.length() + 1));
-                if (m_cdBirthday == null)
+                m_cdBirthday = new CustomDate(aryStrInfo[i].trim().substring(TAG_BRITHDAY.length() + 1));
+                if (m_cdBirthday.GetDate() == null || m_cdBirthday.GetDate().after(new Date()))
                 {
                     m_bIsValid = false;
                     break;
@@ -62,24 +69,42 @@ public class ECBEntry
             }
             else if (strTag.equalsIgnoreCase(TAG_PHONE))
             {
-                m_strPhone = aryStrInfo[i].substring(TAG_PHONE.length() + 1).trim();
+                m_strPhone = aryStrInfo[i].trim().substring(TAG_PHONE.length() + 1).trim();
                 if (m_strPhone.matches("^[0-9 +-]+$") == false)
                 {
-                    m_bIsValid = false;
-                    break;
+                    //m_bIsValid = false;
+                    //break;
+                    m_strPhone = null;
                 }
+                
+                //trim the heading zeros.
+                //reference: https://stackoverflow.com/questions/2800739/how-to-remove-leading-zeros-from-alphanumeric-text/2800839#2800839
+                if (m_strPhone != null)
+                {
+                    m_strPhone = m_strPhone.replaceFirst("^0+(?!$)", "");
+                }     
             }
             else if (strTag.equalsIgnoreCase(TAG_ADDRESS))
             {
-                m_strAddress = aryStrInfo[i].substring(TAG_ADDRESS.length() + 1).trim();
+                m_strAddress = aryStrInfo[i].trim().substring(TAG_ADDRESS.length() + 1).trim();
+                
+                if (m_strAddress.matches(".*[0-9]{4}$") == false)
+                {
+                    m_strAddress = null;
+                }
+                
+//                if (m_strAddress != null)
+//                {
+//                    m_strAddress = m_strAddress.replaceFirst("^[^0-9]+(?!$)", "");
+//                }
+                
             }
             else if (strTag.equalsIgnoreCase(TAG_EMAIL))
             {
-                m_strEmail = aryStrInfo[i].substring(TAG_EMAIL.length() + 1).trim();
+                m_strEmail = aryStrInfo[i].trim().substring(TAG_EMAIL.length() + 1).trim();
                 if (m_strEmail.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$") == false)
                 {
-                    m_bIsValid = false;
-                    break;
+                    m_strEmail = null;
                 }
             }
         }
@@ -99,15 +124,15 @@ public class ECBEntry
     {
         String strInfo = TAG_NAME + ": " + m_strName + "\r\n" + 
                          TAG_BRITHDAY + ": " + m_cdBirthday.GetStrDate() + "\r\n";
+       
+        if (m_strAddress != null)
+        {
+            strInfo += TAG_ADDRESS + ": " + m_strAddress + "\r\n"; 
+        }
         
         if (m_strPhone != null)
         {
             strInfo += TAG_PHONE +": " + m_strPhone + "\r\n"; 
-        }
-        
-        if (m_strAddress != null)
-        {
-            strInfo += TAG_ADDRESS + ": " + m_strAddress + "\r\n"; 
         }
         
         if (m_strEmail != null)
@@ -121,35 +146,6 @@ public class ECBEntry
     }
     
     /**
-     * Summarize this entry's information (in a one-line format).
-     * @return
-     */
-    public String GetInfoOneLine()
-    {
-        String strInfo = TAG_NAME + " " + m_strName + ";" + 
-                         TAG_BRITHDAY + " " + m_cdBirthday.GetStrDate() + ";";
-        
-        if (m_strPhone != null)
-        {
-            strInfo += TAG_PHONE + " " + m_strPhone + ";"; 
-        }
-        
-        if (m_strAddress != null)
-        {
-            strInfo += TAG_ADDRESS + " " + m_strAddress + ";"; 
-        }
-        
-        if (m_strEmail != null)
-        {
-            strInfo += TAG_EMAIL + " " + m_strEmail + ";"; 
-        }
-        
-        strInfo += "\r\n";
-        
-        return strInfo;
-    }
-    
-    /**
      * 
      * @return Return true if this instance is valid; return false if this instance is invalid.
      */
@@ -158,8 +154,6 @@ public class ECBEntry
         return m_bIsValid;
     }
 
-    
-    
     
     //Below is the setters and getters.
     
